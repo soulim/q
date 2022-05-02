@@ -1,0 +1,17 @@
+{
+  "name": "q-extension",
+  "version": "0.1.0",
+  "description": "TODO: Add description",
+  "scripts": {
+    "start": "web-ext run"
+  },
+  "author": "Alexander Sulim (https://sul.im/)",
+  "license": "MIT",
+  "devDependencies": {
+    "web-ext": "^6.8.0"
+  },
+  "webExt": {
+    "sourceDir": "src/",
+    "verbose": false
+  }
+}
