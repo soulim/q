@@ -1,10 +1,10 @@
-BIN_DIR = ./bin
-Q_HOST_DIR = ./host
+Q_HOST_DIR = $(realpath .)/host
+Q_HOST_BIN_DIR = $(Q_HOST_DIR)/bin
 
-$(BIN_DIR):
+$(Q_HOST_BIN_DIR):
 	mkdir -p $@
 
-Q_HOST = $(BIN_DIR)/q
+Q_HOST = $(Q_HOST_BIN_DIR)/q
 Q_HOST_MANIFEST = $(Q_HOST_DIR)/manifest.json
 
 # See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#manifest_location
@@ -12,7 +12,7 @@ Q_HOST_MANIFEST = $(Q_HOST_DIR)/manifest.json
 # TODO: Change the variable name to something better
 Q_HOST_MANIFEST_PATH = $(HOME)/.mozilla/native-messaging-hosts/dev.sulim.q.json
 
-$(Q_HOST): $(Q_HOST_DIR)/*.go | $(BIN_DIR)
+$(Q_HOST): $(Q_HOST_DIR)/*.go | $(Q_HOST_BIN_DIR)
 	cd $(Q_HOST_DIR) \
 	&& go build -o $@
 
@@ -34,5 +34,5 @@ install: install-host install-extension
 
 .PHONY: clean
 clean:
-	rm -rf $(BIN_DIR)
+	rm -rf $(Q_HOST_BIN_DIR)
 	rm -f $(Q_HOST_MANIFEST_PATH)
