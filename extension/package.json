@@ -8,6 +8,7 @@
   "author": "Alexander Sulim (https://sul.im/)",
   "license": "MIT",
   "devDependencies": {
+    "@squoosh/cli": "^0.7.2",
     "web-ext": "^6.8.0"
   },
   "webExt": {
