@@ -8,31 +8,107 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"os/user"
+	"path/filepath"
+
+	"github.com/BurntSushi/toml"
 )
 
+type RPCRequest struct {
+	Version string   `json:"jsonrpc"`
+	Method  string   `json:"method"`
+	Params  []string `json:"params"`
+	ID      string   `json:"id"`
+}
+
+type RPCResponse struct {
+	Version string `json:"jsonrpc"`
+	Result  any    `json:"result"`
+	ID      string `json:"id"`
+}
+
+type Command struct {
+	Label     string   `json:"label"`
+	Command   string   `json:"command"`
+	Arguments []string `json:"arguments"`
+}
+
+type Config struct {
+	Commands map[string]Command `toml:"commands"`
+}
+
 func main() {
-	// Receive a request
-
-	var message []byte
-
-	if err := receive(os.Stdin, &message); err != nil {
-		fmt.Fprintf(os.Stderr, "err=%v\n", err)
-	}
-
-	fmt.Fprintf(os.Stderr, "message=%q\n", string(message))
-
-	// Execute `id -unr` command and send its output as a response.
-
-	cmd := exec.Command("id", "-unr")
-
-	out, err := cmd.Output()
+	u, err := user.Current()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "err=%v\n", err)
 	}
 
-	if err := send(os.Stdout, string(out)); err != nil {
+	var config Config
+
+	if _, err := toml.DecodeFile(filepath.Join(u.HomeDir, ".config", "q", "config.toml"), &config); err != nil {
 		fmt.Fprintf(os.Stderr, "err=%v\n", err)
 	}
+
+	fmt.Fprintf(os.Stderr, "config=%q\n", config)
+	var req RPCRequest
+
+	if err := receive(os.Stdin, &req); err != nil {
+		fmt.Fprintf(os.Stderr, "err=%v\n", err)
+	}
+
+	fmt.Fprintf(os.Stderr, "req=%q\n", req)
+
+	switch req.Method {
+	case "ListCommands":
+		type ResponseCommand struct {
+			ID    string `json:"id"`
+			Label string `json:"label"`
+		}
+
+		var result []ResponseCommand
+
+		for k, v := range config.Commands {
+			result = append(result, ResponseCommand{
+				ID:    k,
+				Label: v.Label,
+			})
+		}
+
+		res := RPCResponse{
+			Version: "2.0",
+			Result:  result,
+			ID:      req.ID,
+		}
+
+		if err := send(os.Stdout, res); err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+	case "RunCommand":
+		command, ok := config.Commands[req.Params[0]]
+		if !ok {
+			fmt.Fprintf(os.Stderr, "err=missing command %v\n", req.Params[0])
+		}
+
+		cmd := exec.Command(command.Command, command.Arguments...)
+
+		out, err := cmd.Output()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+
+		res := RPCResponse{
+			Version: "2.0",
+			Result:  string(out),
+			ID:      req.ID,
+		}
+
+		if err := send(os.Stdout, res); err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+	default:
+		fmt.Fprintf(os.Stderr, "err=unknown RPC method %v\n", req.Method)
+	}
+
 }
 
 func receive(r io.Reader, v any) error {
