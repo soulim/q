@@ -90,6 +90,14 @@ func main() {
 		}
 
 		cmd := exec.Command(command.Command, command.Arguments...)
+		cmd.Env = append(os.Environ(),
+			fmt.Sprintf("Q_PAGE_URL=%s", req.Params[1]),
+			// macOS has a limit of 256KB for a command line. Therefore, page HTML and text should be
+			// stored as temporary files and their paths set to Q_PAGE_HTML and Q_PAGE_TEXT.
+			// Temporary files should be removed after the command execution.
+			// fmt.Sprintf("Q_PAGE_HTML=%q", req.Params[2]),
+			// fmt.Sprintf("Q_PAGE_TEXT=%q", req.Params[3]),
+		)
 
 		out, err := cmd.Output()
 		if err != nil {
