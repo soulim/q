@@ -10,16 +10,16 @@ class RPCServer {
   }
 
   #onConnect(connection) {
+    if (connection.name != "urn:browser-ext:dev.sulim.q:popup") {
+      return;
+    }
+
     connection.onMessage.addListener(this.#onMessage.bind(this));
 
     this.#connections.push(connection);
   }
 
   #onMessage(message, connection) {
-    if (connection.name != "urn:browser-ext:dev.sulim.q:popup") {
-      return;
-    }
-
     let rpcRequest = {
       "jsonrpc": "2.0",
       "id": message.id
@@ -44,11 +44,18 @@ class RPCServer {
         break;
       case "RunCommand":
         rpcRequest["method"] = "RunCommand";
-        rpcRequest["params"] = message.params.slice(0, 1);
+        rpcRequest["params"] = [
+          message.params[0],
+          message.params[1].url,
+          message.params[1].html,
+          message.params[1].text,
+        ];
+        console.debug(rpcRequest);
 
         this.#sendNativeMessage(rpcRequest, onSuccess, onError);
         break;
       default:
+        console.debug(message);
         return;
     }
   }

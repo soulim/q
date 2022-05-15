@@ -41,6 +41,7 @@ class ViewController {
       title.textContent = command.label;
 
       button.dataset.id = command.id;
+
       button.addEventListener("click", this.#didClickCommandButton.bind(this), false);
 
       return button;
@@ -100,11 +101,25 @@ class Model {
   #connection;
 
   #rpcCallbacksQueue;
+  #context;
 
   constructor() {
     this.#rpcCallbacksQueue = new Map();
     this.#connection = browser.runtime.connect({ name:"urn:browser-ext:dev.sulim.q:popup" });
     this.#connection.onMessage.addListener(this.#onMessage.bind(this));
+
+    // Fetch page context (URL, HTML, text).
+    let executing = browser.tabs.executeScript({
+      file: "content.js",
+    });
+    executing.then(
+      function (result) {
+        this.#context = result[0];
+      }.bind(this),
+      function () {
+        console.error(arguments);
+      }.bind(this)
+    );
   }
 
   listCommands(callback) {
@@ -125,7 +140,7 @@ class Model {
     let rpcRequest = {
       "jsonrpc": "2.0",
       "method": "RunCommand",
-      "params": [commandID],
+      "params": [commandID, this.#context],
       "id": rpcRequestID
     }
 

@@ -3,7 +3,8 @@
   "name": "Q",
   "version": "0.1.0",
   "permissions": [
-    "nativeMessaging"
+    "nativeMessaging",
+    "activeTab"
   ],
   "browser_specific_settings": {
     "gecko": {
