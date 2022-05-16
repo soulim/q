@@ -89,15 +89,44 @@ func main() {
 			fmt.Fprintf(os.Stderr, "err=missing command %v\n", req.Params[0])
 		}
 
+		tmp_html, err := os.CreateTemp("", "q-page-*.html")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+		defer os.Remove(tmp_html.Name())
+
+		if _, err := tmp_html.Write([]byte(req.Params[2])); err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+		if err := tmp_html.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+
+		tmp_txt, err := os.CreateTemp("", "q-page-*.txt")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+		defer os.Remove(tmp_txt.Name())
+
+		if _, err := tmp_txt.Write([]byte(req.Params[3])); err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+		if err := tmp_txt.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "err=%v\n", err)
+		}
+
 		cmd := exec.Command(command.Command, command.Arguments...)
 		cmd.Env = append(os.Environ(),
 			fmt.Sprintf("Q_PAGE_URL=%s", req.Params[1]),
-			// macOS has a limit of 256KB for a command line. Therefore, page HTML and text should be
-			// stored as temporary files and their paths set to Q_PAGE_HTML and Q_PAGE_TEXT.
-			// Temporary files should be removed after the command execution.
-			// fmt.Sprintf("Q_PAGE_HTML=%q", req.Params[2]),
-			// fmt.Sprintf("Q_PAGE_TEXT=%q", req.Params[3]),
+			// macOS has a limit of 256KB for a command line.
+			// Therefore, HTML and plain-text representation of a page are stored
+			// as temporary files and their paths set to Q_PAGE_HTML and
+			// Q_PAGE_TEXT variables. These files are available only during command
+			// execution.
+			fmt.Sprintf("Q_PAGE_HTML=%s", tmp_html.Name()),
+			fmt.Sprintf("Q_PAGE_TEXT=%s", tmp_txt.Name()),
 		)
+		fmt.Fprintf(os.Stderr, "cmd=%v\n", cmd)
 
 		out, err := cmd.Output()
 		if err != nil {

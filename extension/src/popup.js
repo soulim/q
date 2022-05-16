@@ -90,6 +90,7 @@ class ViewModel {
 
   runCommand(commandID) {
     let callback = function (response) {
+      console.debug(response);
       this.#coordinatorDelegate.viewModelDidFinish();
     }.bind(this);
 
