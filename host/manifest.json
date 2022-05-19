@@ -1,6 +1,6 @@
 {
   "name": "dev.sulim.q",
-  "description": "TODO: Add description",
+  "description": "Q is a browser extension that allows you to process web pages with external commands.",
   "path": "${Q_HOST_PATH}",
   "type": "stdio",
   "allowed_extensions": [ "q@sulim.dev" ]

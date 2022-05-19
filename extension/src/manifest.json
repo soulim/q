@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Q",
+  "name": "The Q",
+  "description": "Q allows you to process web pages with external commands.",
   "version": "0.1.0",
   "permissions": [
     "nativeMessaging",
@@ -8,8 +9,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "q@sulim.dev",
-      "strict_min_version": "50.0"
+      "id": "q@sulim.dev"
     }
   },
   "background": {
@@ -35,8 +35,7 @@
     }
   },
   "icons": {
-    "16": "q-icon-16.png",
-    "32": "q-icon-32.png",
-    "64": "q-icon-64.png"
+    "48": "q-icon-48.png",
+    "96": "q-icon-96.png"
   }
 }

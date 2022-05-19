@@ -1,18 +1,16 @@
 {
-  "name": "q-extension",
+  "name": "q",
   "version": "0.1.0",
-  "description": "TODO: Add description",
+  "description": "Q is a browser extension that allows you to process web pages with external commands.",
   "scripts": {
-    "start": "web-ext run"
+    "lint": "web-ext lint --source-dir=src/",
+    "build": "web-ext build --source-dir=src/ --artifacts-dir=dist/ --overwrite-dest",
+    "start": "web-ext run  --source-dir=src/"
   },
   "author": "Alexander Sulim (https://sul.im/)",
-  "license": "MIT",
+  "license": "TODO: Add a license",
   "devDependencies": {
     "@squoosh/cli": "^0.7.2",
     "web-ext": "^6.8.0"
-  },
-  "webExt": {
-    "sourceDir": "src/",
-    "verbose": false
   }
 }
