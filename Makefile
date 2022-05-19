@@ -23,6 +23,16 @@ $(Q_HOST): $(Q_HOST_DIR)/*.go | $(Q_HOST_BIN_DIR)
 	cd $(Q_HOST_DIR) \
 	&& go build -o $@
 
+# Defined in the environment and contain credentials to sign the extension.
+WEB_EXT_API_KEY ?=
+WEB_EXT_API_SECRET ?=
+
+WEB_EXT=$(Q_EXTENSION_DIR)/node_modules/.bin/web-ext
+
+$(WEB_EXT):
+	cd $(Q_EXTENSION_DIR) \
+	&& npm ci
+
 .PHONY: check-host
 check-host:
 	cd $(Q_HOST_DIR) \
@@ -41,16 +51,33 @@ install-host: build-host $(Q_HOST_MANIFEST)
 
 .PHONY: check-extension
 check-extension:
-	cd $(Q_EXTENSION_DIR) \
-	&& npm run lint
+	$(WEB_EXT) lint --source-dir=$(Q_EXTENSION_SRC_DIR) \
+	                --self-hosted
 
 .PHONY: build-extension
 build-extension: check-extension
-	cd $(Q_EXTENSION_DIR) \
-	&& npm run build
+	$(WEB_EXT) build --source-dir=$(Q_EXTENSION_SRC_DIR) \
+	                 --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
+	                 --overwrite-dest
+
+.PHONY: sign-extension
+sign-extension: build-extension
+	$(WEB_EXT) sign --source-dir=$(Q_EXTENSION_SRC_DIR) \
+	                --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
+	                --channel=unlisted \
+	                --api-key=$(WEB_EXT_API_KEY) \
+	                --api-secret=$(WEB_EXT_API_SECRET)
+
+.PHONY: preview
+preview: check-extension
+	$(WEB_EXT) run --source-dir=$(Q_EXTENSION_SRC_DIR) \
+	               --browser-console \
+	               --start-url="https://example.com" \
+	               --start-url="about:devtools-toolbox?id=q%40sulim.dev&type=extension" \
+	               --start-url="about:debugging#/runtime/this-firefox"
 
 .PHONY: install-extension
-install-extension: build-extension
+install-extension: sign-extension
 	@echo ""
 	@echo "TODO: Print installation instructions for the extension"
 	@echo ""
