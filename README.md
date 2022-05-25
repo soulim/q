@@ -5,11 +5,52 @@ pages. It's better explained on examples in the background section below.
 
 ## Background
 
-TODO: Add a background section
+Q started from an idea of keeping browser bookmarks as notes in Obsidian. I
+keep my personal notes in plain text files (formatted with Markdown) and use
+[Obsidian](https://obsidian.md/) to work with them. So having notes pages as
+`bookmark` sounded as a great idea. To achieve that it was necessary to simply
+save a URL of a browser tab in a plain text file. Easy? Nope!
+
+As I learned, browsers are very isolated environments. That makes total sense
+because no one wants some JavaScript code loaded on a random page doing some
+crazy things on a local disk. Therefore, it isn't easy to simply save a URL in a
+plain text file.
+
+During my research I discovered "hackable" browsers like
+[qutebrowser](https://qutebrowser.org/), [luakit](https://luakit.github.io/),
+[Nyxt](https://nyxt.atlas.engineer/). They allow not only have keyboard
+navigation, but also process pages with external scripts. That was exactly what
+was necessary because at that point I wanted not only save bookmark notes, but
+be able to do anything I want with pages using my scripts.
+
+Unfortunately none of "hackable" browsers worked well for me (some have
+annoying bugs, some don't work all platforms I use, and so on). They all great,
+but not for me. Therefore, I kept doing research and discovered [the
+WebExtensions
+API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions).
+It allows to create add-ons that work for all major browsers and it's a
+standard. That was a starting point for Q.
+
+### Why it's called "Q"?
+
+> Q is a fictional character, as well as the name of a race, in Star Trek. ...
+> He is an extra-dimensional being of unknown origin who possesses immeasurable
+> power over time, space, the laws of physics, and reality itself, being
+> capable of altering it to his whim.
+>
+> [Wikipedia](https://en.wikipedia.org/wiki/Q_(Star_Trek))
+
+Q gives you immeasurable power over pages loaded in the browser. Use it
+responsibly :wink:
 
 ## Install
 
+At the moment Q is in an early development stage and requires extra efforts to
+compile the host and the extension must be manually installed. Follow code in
+[`Makefile`](Makefile) if something doesn't work.
+
 ```shell
+# Compile and install the host
 make install
 ```
 
