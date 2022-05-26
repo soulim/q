@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"os/user"
 	"path/filepath"
+	"sort"
 
 	"github.com/BurntSushi/toml"
 )
@@ -65,12 +66,19 @@ func main() {
 			Label string `json:"label"`
 		}
 
+		// Soft command IDs.
+		ids := make([]string, 0, len(config.Commands))
+		for id := range config.Commands {
+			ids = append(ids, id)
+		}
+		sort.Strings(ids)
+
 		var result []ResponseCommand
 
-		for k, v := range config.Commands {
+		for _, id := range ids {
 			result = append(result, ResponseCommand{
-				ID:    k,
-				Label: v.Label,
+				ID:    id,
+				Label: config.Commands[id].Label,
 			})
 		}
 
