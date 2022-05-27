@@ -1,6 +1,7 @@
 Q_EXTENSION_DIR = $(realpath .)/extension
 Q_EXTENSION_SRC_DIR = $(Q_EXTENSION_DIR)/src
 Q_EXTENSION_DST_DIR = $(Q_EXTENSION_DIR)/dist
+Q_EXTENSION_VERSION = 0.0.0
 
 Q_HOST_DIR = $(realpath .)/host
 Q_HOST_BIN_DIR = $(Q_HOST_DIR)/bin
@@ -33,57 +34,58 @@ $(WEB_EXT):
 	cd $(Q_EXTENSION_DIR) \
 	&& npm ci
 
-.PHONY: check-host
-check-host:
+.PHONY: host-check
+host-check:
 	cd $(Q_HOST_DIR) \
 	&& go fmt ./... \
 	&& go vet ./...
 
-.PHONY: build-host
-build-host: check-host $(Q_HOST)
+.PHONY: host-build
+host-build: host-check $(Q_HOST)
 
-.PHONY: install-host
-install-host: build-host $(Q_HOST_MANIFEST)
+.PHONY: host-install
+host-install: host-build $(Q_HOST_MANIFEST)
 	export Q_HOST_PATH=$(abspath $(Q_HOST)) \
 	&& cat $(Q_HOST_MANIFEST) \
 	| envsubst > $(Q_HOST_MANIFEST_INSTALL_PATH) \
 	&& cat $(Q_HOST_MANIFEST_INSTALL_PATH)
 
-.PHONY: check-extension
-check-extension:
+.PHONY: extension-check
+extension-check:
 	$(WEB_EXT) lint --source-dir=$(Q_EXTENSION_SRC_DIR) \
 	                --self-hosted
 
-.PHONY: build-extension
-build-extension: check-extension
-	$(WEB_EXT) build --source-dir=$(Q_EXTENSION_SRC_DIR) \
-	                 --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
-	                 --overwrite-dest
-
-.PHONY: sign-extension
-sign-extension: build-extension
-	$(WEB_EXT) sign --source-dir=$(Q_EXTENSION_SRC_DIR) \
-	                --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
-	                --channel=unlisted \
-	                --api-key=$(WEB_EXT_API_KEY) \
-	                --api-secret=$(WEB_EXT_API_SECRET)
-
-.PHONY: preview
-preview: check-extension
+.PHONY: extension-preview
+extension-preview: extension-check
 	$(WEB_EXT) run --source-dir=$(Q_EXTENSION_SRC_DIR) \
 	               --browser-console \
 	               --start-url="https://example.com" \
 	               --start-url="about:devtools-toolbox?id=q%40sulim.dev&type=extension" \
 	               --start-url="about:debugging#/runtime/this-firefox"
 
-.PHONY: install-extension
-install-extension:
+.PHONY: extension-build
+extension-build: extension-check
+	$(WEB_EXT) build --source-dir=$(Q_EXTENSION_SRC_DIR) \
+	                 --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
+					 --filename=q-$(Q_EXTENSION_VERSION).zip \
+	                 --overwrite-dest
+
+.PHONY: extension-release
+extension-release: extension-build
+	$(WEB_EXT) sign --source-dir=$(Q_EXTENSION_SRC_DIR) \
+	                --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
+	                --channel=unlisted \
+	                --api-key=$(WEB_EXT_API_KEY) \
+	                --api-secret=$(WEB_EXT_API_SECRET)
+
+.PHONY: extension-install
+extension-install:
 	@echo ""
 	@echo "TODO: Print installation instructions for the extension"
 	@echo ""
 
 .PHONY: install
-install: install-host install-extension
+install: host-install extension-install
 
 .PHONY: clean
 clean:
