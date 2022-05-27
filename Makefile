@@ -71,7 +71,7 @@ extension-build: extension-check
 	                 --overwrite-dest
 
 .PHONY: extension-release
-extension-release: extension-build
+extension-release: extension-check
 	$(WEB_EXT) sign --source-dir=$(Q_EXTENSION_SRC_DIR) \
 	                --artifacts-dir=$(Q_EXTENSION_DST_DIR) \
 	                --channel=unlisted \
