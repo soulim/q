@@ -1,13 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "The Q",
-  "description": "Q allows you to process web pages with external commands.",
-  "developer": {
-    "name": "Alexander Sulim",
-    "url": "https://sul.im/"
-  },
-  "homepage_url": "https://github.com/soulim/q/",
+  "name": "Q: process pages with your scripts",
+  "short_name": "Q",
   "version": "0.2.0",
+  "description": "Q allows you to send web pages to your external scripts for further processing.",
+  "author": "Alexander Sulim",
+  "homepage_url": "https://github.com/soulim/q/",
   "permissions": [
     "nativeMessaging",
     "activeTab"
