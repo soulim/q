@@ -1,7 +1,15 @@
 Q_EXTENSION_DIR = $(realpath .)/extension
 Q_EXTENSION_SRC_DIR = $(Q_EXTENSION_DIR)/src
 Q_EXTENSION_DST_DIR = $(Q_EXTENSION_DIR)/dist
+Q_EXTENSION_MANIFEST_TMPL = $(Q_EXTENSION_DIR)/manifest.json.tmpl
+Q_EXTENSION_MANIFEST = $(Q_EXTENSION_SRC_DIR)/manifest.json
 Q_EXTENSION_VERSION = 0.0.0
+
+$(Q_EXTENSION_MANIFEST): $(Q_EXTENSION_MANIFEST_TMPL)
+	export Q_EXTENSION_VERSION=$(Q_EXTENSION_VERSION) \
+	&& cat $(Q_EXTENSION_MANIFEST_TMPL) \
+	| envsubst > $(Q_EXTENSION_MANIFEST) \
+	&& cat $(Q_EXTENSION_MANIFEST)
 
 Q_HOST_DIR = $(realpath .)/host
 Q_HOST_BIN_DIR = $(Q_HOST_DIR)/bin
@@ -10,15 +18,15 @@ $(Q_HOST_BIN_DIR):
 	mkdir -p $@
 
 Q_HOST = $(Q_HOST_BIN_DIR)/q
-Q_HOST_MANIFEST = $(Q_HOST_DIR)/manifest.json
+Q_HOST_MANIFEST_TMPL = $(Q_HOST_DIR)/manifest.json.tmpl
 
 # See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#manifest_location
-Q_HOST_MANIFEST_INSTALL_DIR = $(HOME)/.mozilla/native-messaging-hosts
+Q_HOST_MANIFEST_DIR = $(HOME)/.mozilla/native-messaging-hosts
 ifeq ($(shell uname -s), Darwin)
-  Q_HOST_MANIFEST_INSTALL_DIR = $(HOME)/Library/Application\ Support/Mozilla/NativeMessagingHosts
+  Q_HOST_MANIFEST_DIR = $(HOME)/Library/Application\ Support/Mozilla/NativeMessagingHosts
 endif
 
-Q_HOST_MANIFEST_INSTALL_PATH = $(Q_HOST_MANIFEST_INSTALL_DIR)/dev.sulim.q.json
+Q_HOST_MANIFEST = $(Q_HOST_MANIFEST_DIR)/dev.sulim.q.json
 
 $(Q_HOST): $(Q_HOST_DIR)/*.go | $(Q_HOST_BIN_DIR)
 	cd $(Q_HOST_DIR) \
@@ -44,14 +52,14 @@ host-check:
 host-build: host-check $(Q_HOST)
 
 .PHONY: host-install
-host-install: host-build $(Q_HOST_MANIFEST)
+host-install: host-build $(Q_HOST_MANIFEST_TMPL)
 	export Q_HOST_PATH=$(abspath $(Q_HOST)) \
-	&& cat $(Q_HOST_MANIFEST) \
-	| envsubst > $(Q_HOST_MANIFEST_INSTALL_PATH) \
-	&& cat $(Q_HOST_MANIFEST_INSTALL_PATH)
+	&& cat $(Q_HOST_MANIFEST_TMPL) \
+	| envsubst > $(Q_HOST_MANIFEST) \
+	&& cat $(Q_HOST_MANIFEST)
 
 .PHONY: extension-check
-extension-check:
+extension-check: $(Q_EXTENSION_MANIFEST)
 	$(WEB_EXT) lint --source-dir=$(Q_EXTENSION_SRC_DIR) \
 	                --self-hosted
 
@@ -90,4 +98,5 @@ install: host-install extension-install
 .PHONY: clean
 clean:
 	rm -rf $(Q_HOST_BIN_DIR) \
-	       $(Q_EXTENSION_DST_DIR)
+	       $(Q_EXTENSION_DST_DIR) \
+	       $(Q_EXTENSION_MANIFEST)
