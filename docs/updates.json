@@ -1,7 +1,12 @@
 {
   "addons": {
     "q@sulim.dev": {
-      "updates": []
+      "updates": [
+        {
+          "version": "0.5.0",
+          "update_link": "https://github.com/soulim/q/releases/download/v0.5.0/q-extension-0.5.0.xpi"
+        }
+      ]
     }
   }
 }
