@@ -43,14 +43,18 @@ class RPCServer {
         this.#sendNativeMessage(rpcRequest, onSuccess, onError);
         break;
       case "RunCommand":
+        let commandID = message.params[0]
+        let pageURL = (message.params[1] !== undefined) ? message.params[1].url : null;
+        let pageHTML = (message.params[1] !== undefined) ? message.params[1].html : null;
+        let pageText = (message.params[1] !== undefined) ? message.params[1].text : null;
+
         rpcRequest["method"] = "RunCommand";
         rpcRequest["params"] = [
-          message.params[0],
-          message.params[1].url,
-          message.params[1].html,
-          message.params[1].text,
+          commandID,
+          pageURL,
+          pageHTML,
+          pageText,
         ];
-        console.debug(rpcRequest);
 
         this.#sendNativeMessage(rpcRequest, onSuccess, onError);
         break;
