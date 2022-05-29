@@ -6,6 +6,7 @@
   "license": "TODO: Add a license",
   "devDependencies": {
     "@squoosh/cli": "^0.7.2",
+    "standard": "^17.0.0",
     "web-ext": "^6.8.0"
   }
 }

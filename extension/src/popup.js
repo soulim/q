@@ -1,197 +1,197 @@
+/* global browser */
+
 class ViewController {
-  #viewModel;
+  #viewModel
 
-  #document;
-  #listCommandsElement;
+  #document
+  #listCommandsElement
 
-  constructor(document) {
-    this.#document = document;
-    this.#listCommandsElement = document.querySelector("#list-commands");
+  constructor (document) {
+    this.#document = document
+    this.#listCommandsElement = document.querySelector('#list-commands')
   }
 
-  set viewModel(value) { this.#viewModel = value }
+  set viewModel (value) { this.#viewModel = value } // eslint-disable-line accessor-pairs
 
-  viewModelDidChangeCommands() {
-    this.#renderCommands(this.#viewModel.commands);
+  viewModelDidChangeCommands () {
+    this.#renderCommands(this.#viewModel.commands)
   }
 
-  renderView() {
-    this.#renderCommands(this.#viewModel.commands);
+  renderView () {
+    this.#renderCommands(this.#viewModel.commands)
   }
 
-  #renderCommands(commands) {
-    if (commands == undefined) {
-      return;
+  #renderCommands (commands) {
+    if (commands === undefined) {
+      return
     }
 
-    this.#displayCommands(commands);
+    this.#displayCommands(commands)
   }
 
-  #displayCommands(commands) {
-    let template = this.#document.querySelector('#btn-command-template');
-    let master = template.content.cloneNode(true)
-                                 .querySelector(".btn-command")
+  #displayCommands (commands) {
+    const template = this.#document.querySelector('#btn-command-template')
+    const master = template.content.cloneNode(true)
+      .querySelector('.btn-command')
 
-    let buttons = commands.map(function (command, index) {
-      let button = master.cloneNode(true);
-      let label = button.querySelector(".btn-command-label");
-      let title = button.querySelector(".btn-command-title");
+    const buttons = commands.map(function (command, index) {
+      const button = master.cloneNode(true)
+      const label = button.querySelector('.btn-command-label')
+      const title = button.querySelector('.btn-command-title')
 
-      label.textContent = index;
-      title.textContent = command.label;
+      label.textContent = index
+      title.textContent = command.label
 
-      button.dataset.id = command.id;
+      button.dataset.id = command.id
 
-      button.addEventListener("click", this.#didClickCommandButton.bind(this), false);
+      button.addEventListener('click', this.#didClickCommandButton.bind(this), false)
 
-      return button;
-    }.bind(this));
+      return button
+    }.bind(this))
 
-    this.#listCommandsElement.replaceChildren(...buttons);
+    this.#listCommandsElement.replaceChildren(...buttons)
   }
 
-  #didClickCommandButton(event) {
-    let command = event.currentTarget.dataset;
+  #didClickCommandButton (event) {
+    const command = event.currentTarget.dataset
 
-    this.#viewModel.runCommand(command.id);
+    this.#viewModel.runCommand(command.id)
   }
 }
 
 class ViewModel {
-  #model;
-  #coordinatorDelegate;
-  #viewDelegate;
+  #model
+  #coordinatorDelegate
+  #viewDelegate
 
-  #commands;
+  #commands
 
-  constructor() {}
+  set model (value) { this.#model = value } // eslint-disable-line accessor-pairs
+  set coordinatorDelegate (value) { this.#coordinatorDelegate = value } // eslint-disable-line accessor-pairs
+  set viewDelegate (value) { this.#viewDelegate = value } // eslint-disable-line accessor-pairs
 
-  set model(value) { this.#model = value }
-  set coordinatorDelegate(value) { this.#coordinatorDelegate = value }
-  set viewDelegate(value) { this.#viewDelegate = value }
+  set commands (value) {
+    this.#commands = value
 
-  set commands(value) {
-    this.#commands = value;
-
-    this.#viewDelegate.viewModelDidChangeCommands();
+    this.#viewDelegate.viewModelDidChangeCommands()
   }
 
-  get commands() {
-    if (this.#commands != undefined) {
-      return this.#commands;
+  get commands () {
+    if (this.#commands !== undefined) {
+      return this.#commands
     }
 
-    let callback = function (commands) {
-      this.commands = commands;
-    }.bind(this);
+    const callback = function (commands) {
+      this.commands = commands
+    }.bind(this)
 
     this.#model.listCommands(callback)
   }
 
-  runCommand(commandID) {
-    let callback = function (response) {
-      console.debug(response);
-      this.#coordinatorDelegate.viewModelDidFinish();
-    }.bind(this);
+  runCommand (commandID) {
+    const callback = function (response) {
+      console.debug(response)
+      this.#coordinatorDelegate.viewModelDidFinish()
+    }.bind(this)
 
-    this.#model.runCommand(commandID, callback);
+    this.#model.runCommand(commandID, callback)
   }
 }
 
 class Model {
-  #connection;
+  #connection
 
-  #rpcCallbacksQueue;
-  #context;
+  #rpcCallbacksQueue
+  #context
 
-  constructor() {
-    this.#rpcCallbacksQueue = new Map();
-    this.#connection = browser.runtime.connect({ name:"urn:browser-ext:dev.sulim.q:popup" });
-    this.#connection.onMessage.addListener(this.#onMessage.bind(this));
+  constructor () {
+    this.#rpcCallbacksQueue = new Map()
+    this.#connection = browser.runtime.connect({ name: 'urn:browser-ext:dev.sulim.q:popup' })
+    this.#connection.onMessage.addListener(this.#onMessage.bind(this))
 
     // Fetch page context (URL, HTML, text).
-    let executing = browser.tabs.executeScript({
-      file: "content.js",
-    });
+    const executing = browser.tabs.executeScript({
+      file: 'content.js'
+    })
     executing.then(
       function (result) {
-        this.#context = result[0];
+        this.#context = result[0]
       }.bind(this),
       function () {
-        console.error(arguments);
-      }.bind(this)
-    );
+        console.error(arguments)
+      }
+    )
   }
 
-  listCommands(callback) {
-    let rpcRequestID = this.#generateRequestID();
-    let rpcRequest = {
-      "jsonrpc": "2.0",
-      "method": "ListCommands",
-      "id": rpcRequestID
+  listCommands (callback) {
+    const rpcRequestID = this.#generateRequestID()
+    const rpcRequest = {
+      jsonrpc: '2.0',
+      method: 'ListCommands',
+      id: rpcRequestID
     }
 
     this.#rpcCallbacksQueue.set(rpcRequestID, callback)
 
-    this.#connection.postMessage(rpcRequest);
+    this.#connection.postMessage(rpcRequest)
   }
 
-  runCommand(commandID, callback) {
-    let rpcRequestID = this.#generateRequestID();
-    let rpcRequest = {
-      "jsonrpc": "2.0",
-      "method": "RunCommand",
-      "params": [commandID, this.#context],
-      "id": rpcRequestID
+  runCommand (commandID, callback) {
+    const rpcRequestID = this.#generateRequestID()
+    const rpcRequest = {
+      jsonrpc: '2.0',
+      method: 'RunCommand',
+      params: [commandID, this.#context],
+      id: rpcRequestID
     }
 
     this.#rpcCallbacksQueue.set(rpcRequestID, callback)
 
-    this.#connection.postMessage(rpcRequest);
+    this.#connection.postMessage(rpcRequest)
   }
 
-  #onMessage(message, connection) {
-    let callback = this.#rpcCallbacksQueue.get(message.id);
+  #onMessage (message, connection) {
+    const callback = this.#rpcCallbacksQueue.get(message.id)
 
-    if (callback == undefined) {
-      return;
+    if (callback === undefined) {
+      return
     }
 
-    callback(message.result);
+    callback(message.result)
   }
 
-  #generateRequestID() {
+  #generateRequestID () {
     return `urn:browser-ext:dev.sulim.q:rpc-request:${this.#rpcCallbacksQueue.size + 1}`
   }
 }
 
 class Coordinator {
-  #window;
+  #window
 
-  constructor(window) {
-    this.#window = window;
+  constructor (window) {
+    this.#window = window
   }
 
-  start() {
-    let viewController = new ViewController(this.#window.document);
-    let viewModel = new ViewModel();
+  start () {
+    const viewController = new ViewController(this.#window.document)
+    const viewModel = new ViewModel()
 
-    viewController.viewModel = viewModel;
+    viewController.viewModel = viewModel
 
-    viewModel.model = new Model();
-    viewModel.coordinatorDelegate = this;
-    viewModel.viewDelegate = viewController;
+    viewModel.model = new Model()
+    viewModel.coordinatorDelegate = this
+    viewModel.viewDelegate = viewController
 
-    viewController.renderView();
+    viewController.renderView()
   }
 
-  viewModelDidFinish() {
-    this.#window.close();
+  viewModelDidFinish () {
+    this.#window.close()
   }
 }
 
-window.addEventListener("load", function () {
-  let coordinator = new Coordinator(this);
+window.addEventListener('load', function () {
+  const coordinator = new Coordinator(this)
 
-  coordinator.start();
-});
+  coordinator.start()
+})

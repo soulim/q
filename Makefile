@@ -37,8 +37,13 @@ WEB_EXT_API_KEY ?=
 WEB_EXT_API_SECRET ?=
 
 WEB_EXT=$(Q_EXTENSION_DIR)/node_modules/.bin/web-ext
+STANDARD=$(Q_EXTENSION_DIR)/node_modules/.bin/standard
 
 $(WEB_EXT):
+	cd $(Q_EXTENSION_DIR) \
+	&& npm ci
+
+$(STANDARD):
 	cd $(Q_EXTENSION_DIR) \
 	&& npm ci
 
@@ -60,6 +65,7 @@ host-install: host-build $(Q_HOST_MANIFEST_TMPL)
 
 .PHONY: extension-check
 extension-check: $(Q_EXTENSION_MANIFEST)
+	$(STANDARD) $(Q_EXTENSION_SRC_DIR)/**/*.js
 	$(WEB_EXT) lint --source-dir=$(Q_EXTENSION_SRC_DIR) \
 	                --self-hosted
 
