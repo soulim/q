@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+header "v0.1.0"
+footer "C4 Model"
+
+title "How main components interract with each other"
+caption "Context diagram"
+
+Person(user, "User", "")
+Boundary(browser, "Browser") {
+  System(extension, "Extension", "Allows the user to process web pages with external commands")
+}
+
+System_Ext(host, "Host", "Runs external commands and passes them web pages from the extension")
+System_Ext(command, "Command/Script", "Any executable command/script that processes received web pages")
+
+Rel_D(user, extension, "Uses")
+Rel_R(extension, host, "Sends web pages", "NativeMessaging")
+Rel_D(host, command, "Runs", "Process execution")
+@enduml
