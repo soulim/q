@@ -58,6 +58,25 @@ make install
 
 TODO: Add usage instructions
 
+## Architecture
+
+The architecture of Q is based and highly influenced by the [WebExtensions APIs][webextensions-api]. There are two main components:
+
+1. the browser extension (or add-on),
+2. the host application.
+
+The user interacts with the extension in the browser. The extension doesn't
+have direct access to the host application, but communicates with it via the
+[native messaging][native-messaging] interface provided by the browser. The
+host application runs external commands or scripts, but only those defined by
+the user (see configuration below).
+
+![System context diagram][diagram-system-context]
+
+## Configuration
+
+TODO: Add configuration example
+
 ## Contributing
 
 Q is open to code contributions for bug fixes only. As features might carry a
@@ -74,3 +93,7 @@ the GNU General Public License as published by the Free Software Foundation,
 either version 3 of the License, or (at your option) any later version.
 
 See [COPYING](COPYING) for license text.
+
+[webextensions-api]: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs
+[native-messaging]: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging
+[diagram-system-context]: docs/context.puml.png
