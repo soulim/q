@@ -27,7 +27,7 @@ Unfortunately none of "hackable" browsers worked well for me (some have
 annoying bugs, some don't work all platforms I use, and so on). They all great,
 but not for me. Therefore, I kept doing research and discovered [the
 WebExtensions
-API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions).
+API][webextensions-api].
 It allows to create add-ons that work for all major browsers and it's a
 standard. That was a starting point for Q.
 
@@ -38,7 +38,7 @@ standard. That was a starting point for Q.
 > power over time, space, the laws of physics, and reality itself, being
 > capable of altering it to his whim.
 >
-> [Wikipedia](https://en.wikipedia.org/wiki/Q_(Star_Trek))
+> [Wikipedia](<https://en.wikipedia.org/wiki/Q_(Star_Trek)>)
 
 Q gives you immeasurable power over pages loaded in the browser. Use it
 responsibly :wink:
