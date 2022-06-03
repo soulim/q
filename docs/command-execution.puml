@@ -1,0 +1,47 @@
+@startuml
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+
+header "v0.1.0"
+footer ""
+
+title "Command execution flow"
+caption ""
+
+box "Extension"
+  participant Popup as "popup.js"
+  participant Background as "background.js"
+end box
+participant Host as "host"
+participant Command as "command"
+
+== Commands listing ==
+
+[-> Popup : List available commands
+Popup ->> Background : ListCommands JSON-RPC/2.0
+Background -> Host: ListCommands JSON-RPC/2.0
+
+Host -> Host : Load configuration file
+Host --> Background : JSON-RPC/2.0 result
+
+Background -->> Popup : JSON-RPC/2.0 result
+Popup -->[ : Display commands listing
+
+== Command execution ==
+
+[-> Popup : Run selected command
+Popup ->> Background : RunCommand JSON-RPC/2.0
+Popup -->[ : Hide commands listing
+
+Background -> Host : RunCommand JSON-RPC/2.0
+Host -> Host : Prepare runtime environment
+Host -> Command ** : Execute command
+...
+opt "if command sends something to STDOUT stream"
+  Command --> Host : STDOUT
+  Host ->> Background : JSON-RPC/2.0 result
+  Background ->>[ : Display notification
+end
+...
+Command --> Host : Exit 0
+@enduml
