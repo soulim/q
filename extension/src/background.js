@@ -26,13 +26,6 @@ class RPCServer {
       jsonrpc: "2.0",
       id: message.id,
     };
-    const onSuccess = function (response) {
-      connection.postMessage({
-        jsonrpc: "2.0",
-        result: response.result,
-        id: response.id,
-      });
-    };
     const onError = function (error) {
       console.debug("RPCServer#onMessage/onError");
       console.debug(error);
@@ -40,6 +33,14 @@ class RPCServer {
 
     switch (message.method) {
       case "ListCommands": {
+        const onSuccess = function (response) {
+          connection.postMessage({
+            jsonrpc: "2.0",
+            result: response.result,
+            id: response.id,
+          });
+        };
+
         rpcRequest.method = "ListCommands";
 
         this.#sendNativeMessage(rpcRequest, onSuccess, onError);
@@ -57,7 +58,18 @@ class RPCServer {
         rpcRequest.method = "RunCommand";
         rpcRequest.params = [commandID, pageURL, pageHTML, pageText];
 
+        const onSuccess = function (response) {
+          console.debug("RPCServer#onMessage/onSuccess");
+          console.debug(response);
+        };
+
         this.#sendNativeMessage(rpcRequest, onSuccess, onError);
+
+        connection.postMessage({
+          jsonrpc: "2.0",
+          result: null,
+          id: message.id,
+        });
         break;
       }
       default: {
