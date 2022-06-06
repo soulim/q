@@ -61,6 +61,14 @@ class RPCServer {
         const onSuccess = function (response) {
           console.debug("RPCServer#onMessage/onSuccess");
           console.debug(response);
+
+          if (response.result !== "") {
+            browser.notifications.create({
+              "type": "basic",
+              "title": "Response from Q command",
+              "message": response.result
+            });
+          }
         };
 
         this.#sendNativeMessage(rpcRequest, onSuccess, onError);
