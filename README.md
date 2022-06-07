@@ -60,7 +60,8 @@ TODO: Add usage instructions
 
 ## Architecture
 
-The architecture of Q is based and highly influenced by the [WebExtensions APIs][webextensions-api]. There are two main components:
+The architecture of Q is based and highly influenced by the [WebExtensions
+APIs][webextensions-api]. There are two main components:
 
 1. the browser extension (or add-on),
 2. the host application.
@@ -79,7 +80,22 @@ the user (see configuration below).
 
 ## Configuration
 
-TODO: Add configuration example
+Configuration should be defined in `$HOME/.config/q/config.toml`. This file
+contains a table of available commands.
+
+Example:
+
+```toml
+[commands.bookmark]
+label = "Save as a bookmark note"
+command = "/home/soulim/.local/share/q/bin/add-bookmark-note"
+
+[commands.demo-script]
+label = "Run a demo script "
+command = "/home/soulim/.local/share/q/bin/demo"
+```
+
+NOTE: `command` keys must use absolute paths to executables as their values.
 
 ## Contributing
 
