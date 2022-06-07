@@ -73,6 +73,10 @@ the user (see configuration below).
 
 ![System context diagram][diagram-system-context]
 
+### Command execution flow
+
+![Command execution flow][diagram-command-execution]
+
 ## Configuration
 
 TODO: Add configuration example
@@ -97,3 +101,4 @@ See [COPYING](COPYING) for license text.
 [webextensions-api]: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs
 [native-messaging]: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging
 [diagram-system-context]: docs/context.puml.png
+[diagram-command-execution]: docs/command-execution.puml.png
