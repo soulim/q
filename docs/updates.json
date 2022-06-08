@@ -3,6 +3,10 @@
     "q@sulim.dev": {
       "updates": [
         {
+          "version": "0.6.0",
+          "update_link": "https://github.com/soulim/q/releases/download/v0.6.0/q-extension-0.6.0.xpi"
+        },
+        {
           "version": "0.5.0",
           "update_link": "https://github.com/soulim/q/releases/download/v0.5.0/q-extension-0.5.0.xpi"
         }
