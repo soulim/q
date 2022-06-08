@@ -47,14 +47,11 @@ responsibly :wink:
 
 ## Install
 
-At the moment Q is in an early development stage and requires extra efforts to
-compile the host and the extension must be manually installed. Follow code in
-[`Makefile`](Makefile) if something doesn't work.
+Follow instructions provided for [the
+release](https://github.com/soulim/q/releases/latest).
 
-```shell
-# Compile and install the host
-make install
-```
+NOTE: At the moment Q is in the early development stage. Some things require
+additional effort.
 
 ## Usage
 
