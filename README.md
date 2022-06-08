@@ -1,5 +1,7 @@
 # Q
 
+![Screenshot][q-screenshot]
+
 Q is a browser extension that allows to run external commands and process open
 pages. It's better explained on examples in the background section below.
 
@@ -118,3 +120,4 @@ See [COPYING](COPYING) for license text.
 [native-messaging]: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging
 [diagram-system-context]: docs/context.puml.png
 [diagram-command-execution]: docs/command-execution.puml.png
+[q-screenshot]: docs/q-screenshot.png
