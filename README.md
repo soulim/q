@@ -45,17 +45,72 @@ standard. That was a starting point for Q.
 Q gives you immeasurable power over pages loaded in the browser. Use it
 responsibly :wink:
 
+### How it works
+
+Q isn't just a browser extension. It's tiny eco-system consisting of the
+following components:
+
+  1. The browser extension (add-on).
+  2. The host application.
+  3. A configuration file.
+  4. Scripts, or bertter to say executables, *you* write to do anything *you* like
+   with URLs and pages received from the browser.
+
+The extension does nothing more than provides a human-friendly interface to
+talk to the host application.
+
+The host application is there to serve a list of possible commands to execute,
+and to run a selected command at *your* order. At runtime each command has
+access to following environment variables provided by the host:
+
+  - `Q_PAGE_URL`, a URL of the page
+  - `Q_PAGE_HTML`, a path to temporary file containing source code of the page
+  - `Q_PAGE_TEXT`, a path to a temporary file containing only text of the page
+
+You define all available commands in a configuration file. See the
+configuration section below for all details.
+
+If you script or executable sends something to the standard output stream
+(STDOUT), Q displays that using notifications. That could be useful for example
+in cases of long running scripts when you would like to be notified about
+finished operation. However it's totally up to you to decide whether it makes
+sense to display any notification or not. Q isn't going to be "smart" to decide
+on that for you. It's designed to assist, but never stay on your way.
+
+**NOTE:** by design Q *cannot* execute any random code or run any arbitruary
+app or script avaiable on your machine. It operates only on what *you* define
+as possible in its configuration.
+
+### Security
+
+TODO
+
 ## Install
 
-Follow instructions provided for [the
-release](https://github.com/soulim/q/releases/latest).
-
-NOTE: At the moment Q is in the early development stage. Some things require
-additional effort.
+Installation instructions provided for [each release](https://github.com/soulim/q/releases).
 
 ## Usage
 
 TODO: Add usage instructions
+
+### Configuration
+
+Configuration should be defined in `$HOME/.config/q/config.toml`. This file
+contains a table of available commands.
+
+Example:
+
+```toml
+[commands.bookmark]
+label = "Save as a bookmark note"
+command = "/home/soulim/.local/share/q/bin/add-bookmark-note"
+
+[commands.demo-script]
+label = "Run a demo script "
+command = "/home/soulim/.local/share/q/bin/demo"
+```
+
+NOTE: `command` keys must use absolute paths to executables as their values.
 
 ## Architecture
 
@@ -77,24 +132,6 @@ the user (see configuration below).
 
 ![Command execution flow][diagram-command-execution]
 
-## Configuration
-
-Configuration should be defined in `$HOME/.config/q/config.toml`. This file
-contains a table of available commands.
-
-Example:
-
-```toml
-[commands.bookmark]
-label = "Save as a bookmark note"
-command = "/home/soulim/.local/share/q/bin/add-bookmark-note"
-
-[commands.demo-script]
-label = "Run a demo script "
-command = "/home/soulim/.local/share/q/bin/demo"
-```
-
-NOTE: `command` keys must use absolute paths to executables as their values.
 
 ## Contributing
 
