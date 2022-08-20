@@ -3,66 +3,60 @@ package host_test
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"testing"
 
 	"github.com/soulim/q/host/internal/host"
 )
 
-type nativemessage struct {
-	header uint32
-	body   json.RawMessage
-	raw    []byte
-}
+func nativemessage(t *testing.T, m []byte) []byte {
+	t.Helper()
 
-func newNativemessage(v any) *nativemessage {
-}
+	nm := []byte{}
 
-func (nm *nativemessage) bytes() ([]byte, error) {
-	data, err := json.Marshal(nm.body)
-	if err != nil {
-		return nil, err
-	}
+	nm = binary.LittleEndian.AppendUint32(nm, uint32(len(m)))
+	nm = append(nm, m...)
 
-	buf := &bytes.Buffer{}
-
-	if err := binary.Write(buf, binary.LittleEndian, uint32(len(data))); err != nil {
-		return nil, err
-	}
-
-	buf.Write(data)
-
-	return buf.Bytes(), err
+	return nm
 }
 
 func TestConn_Read(t *testing.T) {
-	req := &host.Request{Method: "HelloWorld"}
+	m := []byte(`{"Method": "HelloWorld"}`)
 
-	t.Run("ok", func(t *testing.T) {
-		stdin := &bytes.Buffer{}
-		stdout := &bytes.Buffer{}
-		nm := &nativemessage{body: req}
+	stdin := &bytes.Buffer{}
+	stdout := &bytes.Buffer{}
 
-		payload, err := nm.bytes()
-		if err != nil {
-			t.Fatalf("error %q", err)
-		}
+	stdin.Write(nativemessage(t, m))
 
-		stdin.Write(payload)
+	conn := host.NewConn(stdin, stdout)
 
-		conn := host.NewConn(stdin, stdout)
+	want := m
+	got := make([]byte, 24)
 
-		want := nm.body
-		got := []byte{}
-		_, err = conn.Read(got)
-		if err != nil {
-			t.Fatalf("error %q", err)
-		}
+	if _, err := conn.Read(got); err != nil {
+		t.Fatalf("error %q", err)
+	}
 
-		if bytes.Compare(got, want) != 0 {
-			t.Errorf("want = %q, got = %q", want, got)
-		}
-	})
+	if bytes.Compare(got, want) != 0 {
+		t.Errorf("want = %q, got = %q", want, got)
+	}
 }
 
-func TestConn_Write(t *testing.T) {}
+func TestConn_Write(t *testing.T) {
+	m := []byte(`{"Method": "HelloWorld"}`)
+
+	stdin := &bytes.Buffer{}
+	stdout := &bytes.Buffer{}
+
+	conn := host.NewConn(stdin, stdout)
+
+	if _, err := conn.Write(m); err != nil {
+		t.Fatalf("error %q", err)
+	}
+
+	want := nativemessage(t, m)
+	got := stdout.Bytes()
+
+	if bytes.Compare(got, want) != 0 {
+		t.Errorf("want = %q, got = %q", want, got)
+	}
+}
