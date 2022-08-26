@@ -7,9 +7,15 @@ import (
 	"github.com/soulim/q/host/internal/host"
 )
 
-type handler struct{}
+type handler struct {
+	ServeRPCFunc func(host.Request, *host.Response) error
+}
 
 func (h *handler) ServeRPC(req host.Request, res *host.Response) error {
+	if h.ServeRPCFunc != nil {
+		return h.ServeRPCFunc(req, res)
+	}
+
 	return nil
 }
 
