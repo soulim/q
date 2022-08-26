@@ -12,4 +12,3 @@ type Response struct {
 	Result  any    `json:"result"`
 	Version string `json:"jsonrpc"`
 }
-
