@@ -1,0 +1,6 @@
+[commands.hello-world]
+label = "Execute echo"
+command = "echo"
+arguments = [
+  "Hello, world."
+]
