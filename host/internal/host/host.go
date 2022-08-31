@@ -12,3 +12,9 @@ type Response struct {
 	Result  any    `json:"result"`
 	Version string `json:"jsonrpc"`
 }
+
+type Command struct {
+	Arguments []string `json:"arguments"`
+	Command   string   `json:"command"`
+	Label     string   `json:"label"`
+}
