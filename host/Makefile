@@ -1,6 +1,7 @@
 SRC_DIR = .
 DST_DIR = dist
 BIN_DIR = bin
+CMD_DIR = cmd/q
 
 Q = $(BIN_DIR)/q
 
@@ -19,8 +20,8 @@ $(BIN_DIR):
 $(DST_DIR):
 	mkdir -p $@
 
-$(Q): $(SRC_DIR)/*.go | $(BIN_DIR)
-	go build -o $@
+$(Q): $(shell find $(SRC_DIR) -type file -name "*.go" ! -name "*_test.go") | $(BIN_DIR)
+	go build -o $@ ./$(CMD_DIR)
 
 .PHONY: check
 check:
@@ -66,6 +67,7 @@ release-all:
 
 .PHONY: clean
 clean:
+	rm -rf $(BIN_DIR)
 	rm -rf $(DST_DIR)
 
 .PHONY: all
