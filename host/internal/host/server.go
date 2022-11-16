@@ -13,7 +13,7 @@ type Handler interface {
 
 // Server serves incoming connections by passing them to
 // the configured Handler.
-type Server struct{
+type Server struct {
 	Handler Handler
 }
 
@@ -26,7 +26,7 @@ func (s *Server) ServeConn(conn io.ReadWriter) error {
 	}
 
 	res := &Response{
-		ID: req.ID,
+		ID:      req.ID,
 		Version: req.Version,
 	}
 
