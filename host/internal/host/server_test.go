@@ -8,7 +8,7 @@ import (
 )
 
 type handler struct {
-	ServeRPCFunc func(host.Request, *host.Response) error
+	ServeRPCFunc func(req host.Request, res *host.Response) error
 }
 
 func (h *handler) ServeRPC(req host.Request, res *host.Response) error {

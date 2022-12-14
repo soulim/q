@@ -9,7 +9,8 @@ type CommandsListingItem struct {
 
 // ListCommandsProc is a handler for "ListCommands" RPC method.
 type ListCommandsProc struct {
-	Commands map[string]Command
+	commands map[string]Command
+	ids []string
 }
 
 // ServeRPC implements host.Handler interface.
@@ -35,4 +36,11 @@ func (h *ListCommandsProc) ServeRPC(req Request, res *Response) error {
 	res.Result = result
 
 	return nil
+}
+
+func NewListCommandsProc(cmds map[string]Command) *ListCommandsProc {
+
+	return &ListCommandsProc{
+		commands:
+	}
 }
