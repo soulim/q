@@ -19,7 +19,7 @@ func TestRunCommandProc_ServeRPC(t *testing.T) {
 		req := &host.Request{
 			Method:  "RunCommand",
 			ID:      "rpc-id/xxx",
-			Params: []string{"hello-world"},
+			Params: []string{"hello-world", "https://www.example.com", "<html>Hello, world.</html>"},
 			Version: "2.0",
 		}
 		res := &host.Response{}
@@ -40,13 +40,13 @@ func TestRunCommandProc_ServeRPC(t *testing.T) {
 		req := &host.Request{
 			Method:  "RunCommand",
 			ID:      "rpc-id/xxx",
-			Params: []string{"hallo-welt"},
+			Params: []string{"hallo-welt", "https://www.example.com", "<html>Hello, world.</html>"},
 			Version: "2.0",
 		}
 		res := &host.Response{}
 
-		if err := proc.ServerRPC(*req, res); err != nil {
-			t.Fatalf("error: %q", err)
+		if err := proc.ServerRPC(*req, res); err == nil {
+			t.Errorf("expected error, got nil")
 		}
 	})
 	t.Run("command returns an error", func(t *testing.T) {
