@@ -24,7 +24,7 @@ func TestRunCommandProc_ServeRPC(t *testing.T) {
 		}
 		res := &host.Response{}
 
-		if err := proc.ServerRPC(*req, res); err != nil {
+		if err := proc.ServeRPC(*req, res); err != nil {
 			t.Fatalf("error: %q", err)
 		}
 	})
@@ -45,7 +45,7 @@ func TestRunCommandProc_ServeRPC(t *testing.T) {
 		}
 		res := &host.Response{}
 
-		if err := proc.ServerRPC(*req, res); err == nil {
+		if err := proc.ServeRPC(*req, res); err == nil {
 			t.Errorf("expected error, got nil")
 		}
 	})
