@@ -15,7 +15,6 @@ func (h *RunCommandProc) ServeRPC(req Request, res *Response) error {
 	if !exists {
 		return fmt.Errorf("cannot find command with label %q", req.Params[0])
 	}
-	// TODO: Set up runtime environment for the command
 	// Save received HTML source code into a temporary file.
 	tmpHTML, err := os.CreateTemp("", "q-page-*.html")
 	if err != nil {
