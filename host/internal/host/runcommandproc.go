@@ -6,10 +6,12 @@ import (
 	"os/exec"
 )
 
+// RunCommandProc is a handler for "RunCommand" RPC method.
 type RunCommandProc struct {
 	commands map[string]Command
 }
 
+// ServeRPC implements host.Handler interface.
 func (h *RunCommandProc) ServeRPC(req Request, res *Response) error {
 	command, exists := h.commands[req.Params[0]]
 	if !exists {
