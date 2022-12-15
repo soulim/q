@@ -19,6 +19,8 @@ func (h *ListCommandsProc) ServeRPC(req Request, res *Response) error {
 	return nil
 }
 
+// NewListCommandsProc returns a new ListCommandsProc given list of possible
+// commands to return on "ListCommands" method.
 func NewListCommandsProc(cmds map[string]Command) *ListCommandsProc {
 	// Sort commands by IDs. Otherwise the list of the same commands
 	// might have different order and that looks confusing.
