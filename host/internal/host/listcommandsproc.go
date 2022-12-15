@@ -9,38 +9,35 @@ type CommandsListingItem struct {
 
 // ListCommandsProc is a handler for "ListCommands" RPC method.
 type ListCommandsProc struct {
-	commands map[string]Command
-	ids []string
+	commandsListing []CommandsListingItem
 }
 
 // ServeRPC implements host.Handler interface.
 func (h *ListCommandsProc) ServeRPC(req Request, res *Response) error {
-	// Sort commands by IDs.
-	// Otherwise the list of the same commands might have different order
-	// and that looks confusing.
-	ids := make([]string, 0, len(h.Commands))
-	for id := range h.Commands {
-		ids = append(ids, id)
-	}
-	sort.Strings(ids)
-
-	var result []CommandsListingItem
-
-	for _, id := range ids {
-		result = append(result, CommandsListingItem{
-			ID:    id,
-			Label: h.Commands[id].Label,
-		})
-	}
-
-	res.Result = result
+	res.Result = h.commandsListing
 
 	return nil
 }
 
 func NewListCommandsProc(cmds map[string]Command) *ListCommandsProc {
+	// Sort commands by IDs. Otherwise the list of the same commands
+	// might have different order and that looks confusing.
+	ids := make([]string, 0, len(cmds))
+	for id := range cmds {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+
+	listing := []CommandsListingItem{}
+
+	for _, id := range ids {
+		listing = append(listing, CommandsListingItem{
+			ID:    id,
+			Label: cmds[id].Label,
+		})
+	}
 
 	return &ListCommandsProc{
-		commands:
+		commandsListing: listing,
 	}
 }

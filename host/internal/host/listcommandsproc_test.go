@@ -8,15 +8,14 @@ import (
 
 func TestListCommandsProc_ServeRPC(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
-		lcp := &host.ListCommandsProc{
-			Commands: map[string]host.Command{
-				"hello-world": {
-					Label:     "Execute echo",
-					Command:   "echo",
-					Arguments: []string{"Hello, world."},
-				},
-			},
-		}
+		cmds := map[string]host.Command{
+					"hello-world": {
+						Label:     "Execute echo",
+						Command:   "echo",
+						Arguments: []string{"Hello, world."},
+					},
+				}
+		proc := host.NewListCommandsProc(cmds)
 		req := &host.Request{
 			Method:  "ListCommands",
 			ID:      "rpc-id/xxx",
@@ -24,21 +23,20 @@ func TestListCommandsProc_ServeRPC(t *testing.T) {
 		}
 		res := &host.Response{}
 
-		if err := lcp.ServeRPC(*req, res); err != nil {
+		if err := proc.ServeRPC(*req, res); err != nil {
 			t.Fatalf("error: %q", err)
 		}
 
 		result := res.Result.([]host.CommandsListingItem)
 
-		if len(lcp.Commands) != len(result) {
-			t.Errorf("commands listing length does not match: want = %d, got = %d", len(lcp.Commands), len(result))
+		if len(cmds) != len(result) {
+			t.Errorf("commands listing length does not match: want = %d, got = %d", len(cmds), len(result))
 		}
 	})
 
 	t.Run("empty commands list", func(t *testing.T) {
-		lcp := &host.ListCommandsProc{
-			Commands: map[string]host.Command{},
-		}
+		cmds := map[string]host.Command{}
+		proc := host.NewListCommandsProc(cmds)
 		req := &host.Request{
 			Method:  "ListCommands",
 			ID:      "rpc-id/xxx",
@@ -46,7 +44,7 @@ func TestListCommandsProc_ServeRPC(t *testing.T) {
 		}
 		res := &host.Response{}
 
-		if err := lcp.ServeRPC(*req, res); err != nil {
+		if err := proc.ServeRPC(*req, res); err != nil {
 			t.Fatalf("error: %q", err)
 		}
 
