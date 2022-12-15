@@ -10,7 +10,7 @@ type RunCommandProc struct {
 	commands map[string]Command
 }
 
-func (h *RunCommandProc) ServerRPC(req Request, res *Response) error {
+func (h *RunCommandProc) ServeRPC(req Request, res *Response) error {
 	command, exists := h.commands[req.Params[0]]
 	if !exists {
 		return fmt.Errorf("cannot find command with label %q", req.Params[0])
