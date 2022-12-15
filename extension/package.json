@@ -5,7 +5,6 @@
   "author": "Alexander Sulim",
   "license": "TODO: Add a license",
   "devDependencies": {
-    "@squoosh/cli": "^0.7.2",
-    "web-ext": "^6.8.0"
+    "web-ext": "^7.4.0"
   }
 }
