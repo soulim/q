@@ -20,7 +20,7 @@ $(BIN_DIR):
 $(DST_DIR):
 	mkdir -p $@
 
-$(Q): $(shell find $(SRC_DIR) -type file -name "*.go" ! -name "*_test.go") | $(BIN_DIR)
+$(Q): $(shell find $(SRC_DIR) -type "f" -name "*.go" ! -name "*_test.go") | $(BIN_DIR)
 	go build -o $@ ./$(CMD_DIR)
 
 .PHONY: check
