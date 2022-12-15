@@ -42,7 +42,7 @@ uninstall:
 
 .PHONY: release-linux-amd64
 release-linux-amd64: | $(DST_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(DST_DIR)/q
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(DST_DIR)/q ./$(CMD_DIR)
 	tar --create \
 	    --gzip \
 	    --directory=$(DST_DIR) \
@@ -52,7 +52,7 @@ release-linux-amd64: | $(DST_DIR)
 
 .PHONY: release-darwin-amd64
 release-darwin-amd64: | $(DST_DIR)
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o $(DST_DIR)/q
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o $(DST_DIR)/q ./$(CMD_DIR)
 	tar --create \
 	    --gzip \
 	    --directory=$(DST_DIR) \
