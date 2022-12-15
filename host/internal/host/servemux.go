@@ -11,7 +11,7 @@ import (
 // the method.
 type ServeMux struct {
 	mu sync.RWMutex
-	m map[string]Handler
+	m  map[string]Handler
 }
 
 // Register registers a handler for an RPC request by given method.
@@ -56,4 +56,3 @@ func (mux *ServeMux) Handler(method string) (Handler, error) {
 
 	return h, nil
 }
-

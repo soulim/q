@@ -9,12 +9,12 @@ import (
 func TestListCommandsProc_ServeRPC(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
 		cmds := map[string]host.Command{
-					"hello-world": {
-						Label:     "Execute echo",
-						Command:   "echo",
-						Arguments: []string{"Hello, world."},
-					},
-				}
+			"hello-world": {
+				Label:     "Execute echo",
+				Command:   "echo",
+				Arguments: []string{"Hello, world."},
+			},
+		}
 		proc := host.NewListCommandsProc(cmds)
 		req := &host.Request{
 			Method:  "ListCommands",
