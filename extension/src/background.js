@@ -52,11 +52,9 @@ class RPCServer {
           message.params[1] !== undefined ? message.params[1].url : null;
         const pageHTML =
           message.params[1] !== undefined ? message.params[1].html : null;
-        const pageText =
-          message.params[1] !== undefined ? message.params[1].text : null;
 
         rpcRequest.method = "RunCommand";
-        rpcRequest.params = [commandID, pageURL, pageHTML, pageText];
+        rpcRequest.params = [commandID, pageURL, pageHTML];
 
         const onSuccess = function (response) {
           console.debug("RPCServer#onMessage/onSuccess");

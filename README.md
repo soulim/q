@@ -53,7 +53,7 @@ following components:
   1. The browser extension (add-on).
   2. The host application.
   3. A configuration file.
-  4. Scripts, or bertter to say executables, *you* write to do anything *you* like
+  4. Scripts, or better to say executables, *you* write to do anything *you* like
    with URLs and pages received from the browser.
 
 The extension does nothing more than provides a human-friendly interface to
@@ -65,7 +65,6 @@ access to following environment variables provided by the host:
 
   - `Q_PAGE_URL`, a URL of the page
   - `Q_PAGE_HTML`, a path to temporary file containing source code of the page
-  - `Q_PAGE_TEXT`, a path to a temporary file containing only text of the page
 
 You define all available commands in a configuration file. See the
 configuration section below for all details.

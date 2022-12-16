@@ -107,7 +107,6 @@ class ViewModel {
 
   runCommand(commandID) {
     const callback = function (response) {
-      console.debug(response);
       this.#coordinatorDelegate.viewModelDidFinish();
     }.bind(this);
 
@@ -128,7 +127,7 @@ class Model {
     });
     this.#connection.onMessage.addListener(this.#onMessage.bind(this));
 
-    // Fetch page context (URL, HTML, text).
+    // Fetch page context (URL and HTML).
     const executing = browser.tabs.executeScript({
       file: "content.js",
     });
