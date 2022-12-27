@@ -80,10 +80,6 @@ on that for you. It's designed to assist, but never stay on your way.
 app or script avaiable on your machine. It operates only on what *you* define
 as possible in its configuration.
 
-### Security
-
-TODO
-
 ## Install
 
 1. From [the latest release](https://github.com/soulim/q/releases/latest):
@@ -150,6 +146,11 @@ the user (see configuration below).
 
 ![Command execution flow][diagram-command-execution]
 
+### Security
+
+  - The extension never communicates directly with the host. The communication is controlled by the browser.
+  - The extension cannot send any arbituary command to the host to execute. In other words, it cannot request to execute `rm -rf /`.
+  - The extension does not have access to the list of configured commands. It "knows" all commands only by their IDs.
 
 ## Contributing
 
