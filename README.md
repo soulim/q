@@ -84,23 +84,24 @@ as possible in its configuration.
 
 1. From [the latest release](https://github.com/soulim/q/releases/latest):
 
-  - Download, extract, and place somewhere (for example `$HOME/.local/bin`) the host binary
-  - Install the extension by opening its file with Firefox
+    - Download, extract, and place somewhere (for example `$HOME/.local/bin`) the host binary
+    - Install the extension by opening its file with Firefox
 
 2. Using the following template create a manifest file for the native messaging host and place in:
 
-  - Linux: `$(HOME)/.mozilla/native-messaging-hosts`
-  - macOS: `$(HOME)/Library/Application\ Support/Mozilla/NativeMessagingHosts`
+    - Linux: `$(HOME)/.mozilla/native-messaging-hosts`
+    - macOS: `$(HOME)/Library/Application\ Support/Mozilla/NativeMessagingHosts`
 
-  ```json
-  {
-    "name": "dev.sulim.q",
-    "description": "Q is a browser extension that allows you to process web pages with external commands.",
-    "path": "<ABSOLUTE_PATH_TO_Q_HOST_BINARY>",
-    "type": "stdio",
-    "allowed_extensions": [ "q@sulim.dev" ]
-  }
-  ```
+    ```json
+    {
+      "name": "dev.sulim.q",
+      "description": "Q is a browser extension that allows you to process web pages with external commands.",
+      "path": "<ABSOLUTE_PATH_TO_Q_HOST_BINARY>",
+      "type": "stdio",
+      "allowed_extensions": [ "q@sulim.dev" ]
+    }
+    ```
+
 3. Create a configuration file with commands you would like to execute using Q. See the configuration section below.
 
 ## Usage
