@@ -76,8 +76,8 @@ finished operation. However it's totally up to you to decide whether it makes
 sense to display any notification or not. Q isn't going to be "smart" to decide
 on that for you. It's designed to assist, but never stay on your way.
 
-**NOTE:** by design Q *cannot* execute any random code or run any arbitruary
-app or script avaiable on your machine. It operates only on what *you* define
+**NOTE:** by design Q *cannot* execute any random code or run any arbitrary
+app or script available on your machine. It operates only on what *you* define
 as possible in its configuration.
 
 ## Install
@@ -150,7 +150,7 @@ the user (see configuration below).
 ### Security
 
   - The extension never communicates directly with the host. The communication is controlled by the browser.
-  - The extension cannot send any arbituary command to the host to execute. In other words, it cannot request to execute `rm -rf /`.
+  - The extension cannot send any arbitrary command to the host to execute. In other words, it cannot request to execute `rm -rf /`.
   - The extension does not have access to the list of configured commands. It "knows" all commands only by their IDs.
 
 ## Contributing
