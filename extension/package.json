@@ -1,10 +1,13 @@
 {
-  "name": "q",
-  "version": "0.2.0",
-  "description": "Q is a browser extension that allows you to process web pages with external commands.",
   "author": "Alexander Sulim",
-  "license": "TODO: Add a license",
+  "description": "Q is a browser extension that allows you to process web pages with external commands.",
   "devDependencies": {
     "web-ext": "^8.3.0"
-  }
+  },
+  "engines": {
+    "node": "22.11.0"
+  },
+  "license": "TODO: Add a license",
+  "name": "q",
+  "version": "0.2.0"
 }
