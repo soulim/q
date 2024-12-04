@@ -49,6 +49,14 @@ clean:
 	rm -rf $(DST_DIR)
 	rm -f $(MANIFEST_FILE)
 
+.PHONY: sharp
+sharp: package.json
+	cat package.json \
+	| jq --sort-keys ".engines.node = \"$$(asdf current nodejs 2>&1 | sed -e "s/ \{2,\}/ /g" | cut -d" " -f2)\"" > package-new.json \
+	&& mv package-new.json package.json
+	npm ci --no-fund
+	npm prune --no-fund
+
 .PHONY: all
 all: release
 

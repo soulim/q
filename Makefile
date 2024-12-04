@@ -27,4 +27,9 @@ clean:
 	$(MAKE) --directory=$(HOST_DIR) clean
 	rm -rf $(DST_DIR)/*
 
+.PHONY: sharp
+sharp: .tool-versions
+	$(MAKE) --directory=$(EXTENSION_DIR) sharp
+	$(MAKE) --directory=$(HOST_DIR) sharp
+
 .DEFAULT: all
