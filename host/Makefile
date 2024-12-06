@@ -73,7 +73,7 @@ clean:
 
 .PHONY: sharp
 sharp: go.mod
-	go mod edit -go=$$(asdf current golang 2>&1 | sed -e "s/ \{2,\}/ /g" | cut -d" " -f2)
+	go mod edit -go=$$(asdf current golang 2>&1 | awk '{print $$2}')
 	go mod download
 
 .PHONY: all
