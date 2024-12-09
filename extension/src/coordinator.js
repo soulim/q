@@ -3,28 +3,28 @@ import { ViewModel } from "./view_model.js";
 import { Model } from "./model.js";
 
 class Coordinator {
-  #window;
+	#window;
 
-  constructor(window) {
-    this.#window = window;
-  }
+	constructor(window) {
+		this.#window = window;
+	}
 
-  start() {
-    const viewController = new ViewController(this.#window.document);
-    const viewModel = new ViewModel();
+	start() {
+		const viewController = new ViewController(this.#window.document);
+		const viewModel = new ViewModel();
 
-    viewController.viewModel = viewModel;
+		viewController.viewModel = viewModel;
 
-    viewModel.model = new Model();
-    viewModel.coordinatorDelegate = this;
-    viewModel.viewDelegate = viewController;
+		viewModel.model = new Model();
+		viewModel.coordinatorDelegate = this;
+		viewModel.viewDelegate = viewController;
 
-    viewController.renderView();
-  }
+		viewController.renderView();
+	}
 
-  viewModelDidFinish() {
-    this.#window.close();
-  }
+	viewModelDidFinish() {
+		this.#window.close();
+	}
 }
 
 export { Coordinator };
