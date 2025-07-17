@@ -2,7 +2,7 @@
   "author": "Alexander Sulim",
   "description": "Q is a browser extension that allows you to process web pages with external commands.",
   "devDependencies": {
-    "web-ext": "^8.4.0"
+    "web-ext": "^8.9.0"
   },
   "engines": {
     "node": "22.11.0"
