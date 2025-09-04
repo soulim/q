@@ -20,7 +20,7 @@ jobs:
         working-directory: extension
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: extension/package.json
       - run: npm ci --no-fund
