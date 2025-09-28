@@ -23,6 +23,10 @@ $(MANIFEST_FILE): $(MANIFEST_TMPL)
 $(DST_DIR):
 	mkdir -p $@
 
+.PHONY: check-test
+check-test:
+	node --test '$(SRC_DIR)/**/*_test.js'
+
 .PHONY: check
 check: $(MANIFEST_FILE)
 	$(WEB_EXT) lint --source-dir=$(SRC_DIR) \

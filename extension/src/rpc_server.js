@@ -1,12 +1,14 @@
 class RPCServer {
+	#browser;
 	#connections;
 
-	constructor() {
+	constructor(browser) {
+		this.#browser = browser;
 		this.#connections = [];
 	}
 
 	start() {
-		browser.runtime.onConnect.addListener(this.#onConnect.bind(this));
+		this.#browser.runtime.onConnect.addListener(this.#onConnect.bind(this));
 	}
 
 	#onConnect(connection) {
@@ -59,7 +61,7 @@ class RPCServer {
 					console.debug(response);
 
 					if (response.result !== "") {
-						browser.notifications.create({
+						this.#browser.notifications.create({
 							type: "basic",
 							title: "Response from Q command",
 							message: response.result,
@@ -83,7 +85,10 @@ class RPCServer {
 	}
 
 	#sendNativeMessage(message, onSuccess, onError) {
-		const sending = browser.runtime.sendNativeMessage("dev.sulim.q", message);
+		const sending = this.#browser.runtime.sendNativeMessage(
+			"dev.sulim.q",
+			message,
+		);
 		sending.then(onSuccess.bind(this), onError.bind(this));
 	}
 }
