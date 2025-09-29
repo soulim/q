@@ -56,7 +56,7 @@ clean:
 .PHONY: sharp
 sharp: package.json
 	cat package.json \
-	| jq --sort-keys ".engines.node = \"$$(asdf current nodejs 2>&1 | awk '{print $$2}')\"" > package-new.json \
+	| jq --sort-keys ".engines.node = \"$$(asdf current nodejs --no-header 2>&1 | awk '{print $$2}')\"" > package-new.json \
 	&& mv package-new.json package.json
 	npm ci --no-fund
 	npm prune --no-fund
