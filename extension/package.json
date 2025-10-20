@@ -1,15 +1,15 @@
 {
-	"author": "Alexander Sulim",
-	"description": "Q is a browser extension that allows you to process web pages with external commands.",
-	"devDependencies": {
-		"@biomejs/biome": "2.2.4",
-		"web-ext": "9.0.0"
-	},
-	"engines": {
-		"node": "22.20.0"
-	},
-	"license": "TODO: Add a license",
-	"name": "q",
-	"type": "module",
-	"version": "0.2.0"
+  "author": "Alexander Sulim",
+  "description": "Q is a browser extension that allows you to process web pages with external commands.",
+  "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "web-ext": "9.0.0"
+  },
+  "engines": {
+    "node": "22.20.0"
+  },
+  "license": "TODO: Add a license",
+  "name": "q",
+  "type": "module",
+  "version": "0.2.0"
 }

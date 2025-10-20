@@ -1,7 +1,7 @@
 import { Coordinator } from "./coordinator.js";
 
 window.addEventListener("load", function () {
-	const coordinator = new Coordinator(this);
+  const coordinator = new Coordinator(this);
 
-	coordinator.start();
+  coordinator.start();
 });

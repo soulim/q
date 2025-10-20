@@ -1,49 +1,49 @@
 class ViewModel {
-	#model;
-	#coordinatorDelegate;
-	#viewDelegate;
+  #model;
+  #coordinatorDelegate;
+  #viewDelegate;
 
-	#commands;
+  #commands;
 
-	set model(value) {
-		this.#model = value;
-	}
+  set model(value) {
+    this.#model = value;
+  }
 
-	set coordinatorDelegate(value) {
-		this.#coordinatorDelegate = value;
-	}
+  set coordinatorDelegate(value) {
+    this.#coordinatorDelegate = value;
+  }
 
-	set viewDelegate(value) {
-		this.#viewDelegate = value;
-	}
+  set viewDelegate(value) {
+    this.#viewDelegate = value;
+  }
 
-	set commands(value) {
-		this.#commands = value;
+  set commands(value) {
+    this.#commands = value;
 
-		this.#viewDelegate.viewModelDidChangeCommands();
-	}
+    this.#viewDelegate.viewModelDidChangeCommands();
+  }
 
-	get commands() {
-		if (this.#commands !== undefined) {
-			return this.#commands;
-		}
+  get commands() {
+    if (this.#commands !== undefined) {
+      return this.#commands;
+    }
 
-		const callback = function (commands) {
-			this.commands = commands;
-		}.bind(this);
+    const callback = function (commands) {
+      this.commands = commands;
+    }.bind(this);
 
-		this.#model.listCommands(callback);
+    this.#model.listCommands(callback);
 
-		return [];
-	}
+    return [];
+  }
 
-	runCommand(commandID) {
-		const callback = function (response) {
-			this.#coordinatorDelegate.viewModelDidFinish();
-		}.bind(this);
+  runCommand(commandID) {
+    const callback = function (response) {
+      this.#coordinatorDelegate.viewModelDidFinish();
+    }.bind(this);
 
-		this.#model.runCommand(commandID, callback);
-	}
+    this.#model.runCommand(commandID, callback);
+  }
 }
 
 export { ViewModel };

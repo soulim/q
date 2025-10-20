@@ -47,7 +47,10 @@ class Model {
     const rpcRequest = {
       jsonrpc: "2.0",
       method: "RunCommand",
-      params: [commandID, this.#context],
+      params: [
+        commandID,
+        this.#context,
+      ],
       id: rpcRequestID,
     };
 

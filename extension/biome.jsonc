@@ -1,8 +1,9 @@
 // Documentation: https://biomejs.dev/reference/configuration/
 {
-	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"formatter": {
-		// "lineWidth": 320,
-		"useEditorconfig": true
-	}
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "formatter": {
+    // "lineWidth": 320,
+    "useEditorconfig": true,
+    "expand": "always"
+  }
 }
