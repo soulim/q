@@ -23,11 +23,7 @@ test("Model", async (t) => {
 
     const exp = 1;
     const act = browser.tabs.executedScripts.size;
-    tt.assert.strictEqual(
-      act,
-      exp,
-      `expected ${exp} executed scripts, got ${act}`,
-    );
+    tt.assert.strictEqual(act, exp, `expected ${exp} executed scripts, got ${act}`);
   });
 
   // TODO: Add a test to assess the name of the executed script.
@@ -40,9 +36,7 @@ test("Model", async (t) => {
     model.listCommands(callback);
 
     const exp = 1;
-    const act = browser.runtime.openPorts.get(
-      "urn:browser-ext:dev.sulim.q:popup",
-    ).postedMessages.length;
+    const act = browser.runtime.openPorts.get("urn:browser-ext:dev.sulim.q:popup").postedMessages.length;
 
     tt.assert.strictEqual(act, exp, `expected ${exp} messages, got ${act}`);
   });

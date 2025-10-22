@@ -31,9 +31,7 @@ class ViewController {
 
   #displayCommands(commands) {
     const template = this.#document.querySelector("#btn-command-template");
-    const master = template.content
-      .cloneNode(true)
-      .querySelector(".btn-command");
+    const master = template.content.cloneNode(true).querySelector(".btn-command");
 
     const buttons = commands.map(
       function (command, index) {
@@ -46,11 +44,7 @@ class ViewController {
 
         button.dataset.id = command.id;
 
-        button.addEventListener(
-          "click",
-          this.#didClickCommandButton.bind(this),
-          false,
-        );
+        button.addEventListener("click", this.#didClickCommandButton.bind(this), false);
 
         return button;
       }.bind(this),

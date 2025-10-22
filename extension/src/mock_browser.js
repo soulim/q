@@ -36,14 +36,8 @@ class MockRuntime {
 
   // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/connect
   connect(...args) {
-    const extensionId =
-      typeof args[0] === "string" || args[0] instanceof String
-        ? args.shift()
-        : undefined;
-    const connectInfo =
-      typeof args[0] === "object" || args[0] instanceof Object
-        ? args.shift()
-        : undefined;
+    const extensionId = typeof args[0] === "string" || args[0] instanceof String ? args.shift() : undefined;
+    const connectInfo = typeof args[0] === "object" || args[0] instanceof Object ? args.shift() : undefined;
     const port = new MockPort(connectInfo.name);
 
     this.#onConnect.dispatch(port);
@@ -55,9 +49,7 @@ class MockRuntime {
   // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/sendNativeMessage
   sendNativeMessage(application, message) {
     // Store messages per application.
-    const messages = this.#nativeMessages.has(application)
-      ? this.#nativeMessages.get(application)
-      : [];
+    const messages = this.#nativeMessages.has(application) ? this.#nativeMessages.get(application) : [];
     messages.push(message);
     this.#nativeMessages.set(application, messages);
 
@@ -166,14 +158,8 @@ class MockTabs {
 
   // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/executeScript
   executeScript(...args) {
-    const tabId =
-      typeof args[0] === "number" || args[0] instanceof Number
-        ? args.shift()
-        : undefined;
-    const details =
-      typeof args[0] === "object" || args[0] instanceof Object
-        ? args.shift()
-        : undefined;
+    const tabId = typeof args[0] === "number" || args[0] instanceof Number ? args.shift() : undefined;
+    const details = typeof args[0] === "object" || args[0] instanceof Object ? args.shift() : undefined;
 
     this.#executedScripts.set(tabId, details);
 

@@ -1,4 +1,4 @@
 window.context = {
   url: window.document.documentURI,
-  html: window.document.documentElement.innerHTML
+  html: window.document.documentElement.innerHTML,
 };

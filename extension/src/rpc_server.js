@@ -48,10 +48,8 @@ class RPCServer {
       }
       case "RunCommand": {
         const commandID = message.params[0];
-        const pageURL =
-          message.params[1] !== undefined ? message.params[1].url : null;
-        const pageHTML =
-          message.params[1] !== undefined ? message.params[1].html : null;
+        const pageURL = message.params[1] !== undefined ? message.params[1].url : null;
+        const pageHTML = message.params[1] !== undefined ? message.params[1].html : null;
 
         rpcRequest.method = "RunCommand";
         rpcRequest.params = [
@@ -89,10 +87,7 @@ class RPCServer {
   }
 
   #sendNativeMessage(message, onSuccess, onError) {
-    const sending = this.#browser.runtime.sendNativeMessage(
-      "dev.sulim.q",
-      message,
-    );
+    const sending = this.#browser.runtime.sendNativeMessage("dev.sulim.q", message);
     sending.then(onSuccess.bind(this), onError.bind(this));
   }
 }

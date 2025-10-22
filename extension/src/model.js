@@ -1,3 +1,4 @@
+// TODO: Add documentation.
 class Model {
   #connection;
 
@@ -29,6 +30,7 @@ class Model {
     // );
   }
 
+  // TODO: Add documentation.
   listCommands(callback) {
     const rpcRequestID = this.#generateRequestID();
     const rpcRequest = {
@@ -42,6 +44,7 @@ class Model {
     this.#connection.postMessage(rpcRequest);
   }
 
+  // TODO: Add documentation.
   runCommand(commandID, callback) {
     const rpcRequestID = this.#generateRequestID();
     const rpcRequest = {
@@ -70,9 +73,7 @@ class Model {
   }
 
   #generateRequestID() {
-    return `urn:browser-ext:dev.sulim.q:rpc-request:${
-      this.#rpcCallbacksQueue.size + 1
-    }`;
+    return `urn:browser-ext:dev.sulim.q:rpc-request:${this.#rpcCallbacksQueue.size + 1}`;
   }
 }
 

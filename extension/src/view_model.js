@@ -37,8 +37,11 @@ class ViewModel {
     return [];
   }
 
+  // TODO: Add documentation.
   runCommand(commandID) {
-    const callback = function (response) {
+    const callback = function (_response) {
+      if (this.#coordinatorDelegate === undefined) return;
+
       this.#coordinatorDelegate.viewModelDidFinish();
     }.bind(this);
 
