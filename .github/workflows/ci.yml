@@ -7,7 +7,7 @@ jobs:
       run:
         working-directory: host
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
         with:
           go-version-file: host/go.mod
@@ -19,7 +19,7 @@ jobs:
       run:
         working-directory: extension
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: extension/package.json
